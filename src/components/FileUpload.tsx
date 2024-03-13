@@ -6,9 +6,11 @@ import React from 'react';
 import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useRouter } from "next/navigation";
 
 
 const FileUpload = () => {
+    const router = useRouter();
     const [uploading, setUploading] = React.useState(false);
     const{ mutate, isPending} = useMutation({
       mutationFn: async({
@@ -43,12 +45,13 @@ const FileUpload = () => {
         const data = await uploadToS3(file);
         if(!data?.file_key || !data.file_name){
           toast.error("Something went wrong");
-          alert("something went wrong");
+          // alert("something went wrong");
           return;
         }
         mutate(data,{
           onSuccess:(data) => {
-            toast.success(data.message);
+            console.log(data);
+            // toast.success(data.message);
           },
           onError:(err)=>{
             toast.error("Error creating chat");
